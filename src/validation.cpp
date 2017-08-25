@@ -1181,7 +1181,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 
 CAmount GetBlockReward(int amount)
 {
-    CAmount nSubsidy = amount * COIN;
+    CAmount nSubsidy = amount; //* COIN;
 
     return nSubsidy;
 }
