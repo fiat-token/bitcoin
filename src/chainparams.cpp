@@ -289,10 +289,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 999999999999ULL;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0xd9");
+        consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0xd9");
+        consensus.defaultAssumeValid = uint256S("0x00");
 
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
@@ -301,6 +301,12 @@ public:
         nDefaultPort = 18444;
         nPruneAfterHeight = 1000;
 
+        for (int i=0; i<100; i++)
+        {
+            genesis = CreateGenesisBlock(1503882000, i, 0x207fffff, 1, 0 * COIN);
+            consensus.hashGenesisBlock = genesis.GetHash();
+            std::cout << i << " hash: " <<  consensus.hashGenesisBlock.ToString() << "\n";
+        }
         genesis = CreateGenesisBlock(1503882000, 2, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
