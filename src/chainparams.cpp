@@ -301,16 +301,10 @@ public:
         nDefaultPort = 18444;
         nPruneAfterHeight = 1000;
 
-        for (int i=0; i<100; i++)
-        {
-            genesis = CreateGenesisBlock(1503882000, i, 0x207fffff, 1, 0 * COIN);
-            consensus.hashGenesisBlock = genesis.GetHash();
-            std::cout << i << " hash: " <<  consensus.hashGenesisBlock.ToString() << "\n";
-        }
-        genesis = CreateGenesisBlock(1503882000, 2, 0x207fffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1503882000, 15, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        assert(consensus.hashGenesisBlock == uint256S("0xc9ac230ae9f3c73d6426aaa4b24b9597665b3fcbdb1b9c785ec90ff99601b477"));
+        assert(consensus.hashGenesisBlock == uint256S("0x046260b1af1ebf5a7711223beaee06381cf4fbea92ed8206ac979be1ace5d825"));
         assert(genesis.hashMerkleRoot == uint256S("0x50632f4a73ae6d65fc78fb693af5aa6718a5a0251fd806fa5a22f0896dd9dde0"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
@@ -323,7 +317,7 @@ public:
 
         checkpointData = (CCheckpointData){
             boost::assign::map_list_of
-            ( 0, uint256S("c9ac230ae9f3c73d6426aaa4b24b9597665b3fcbdb1b9c785ec90ff99601b477"))
+            ( 0, uint256S("046260b1af1ebf5a7711223beaee06381cf4fbea92ed8206ac979be1ace5d825"))
         };
 
         chainTxData = ChainTxData{
