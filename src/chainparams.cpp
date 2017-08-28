@@ -120,8 +120,8 @@ public:
         genesis = CreateGenesisBlock(1231006505, 2083236893, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        std::cout << "Mainnet hashGenesisBlock: " << consensus.hashGenesisBlock.ToString << "\n";
-        std::cout << "Mainnet hashMerkleRoot: " << genesis.hashMerkleRoot.ToString << "\n";
+        std::cout << "Mainnet hashGenesisBlock: " << consensus.hashGenesisBlock.ToString() << "\n";
+        std::cout << "Mainnet hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << "\n";
 
         //assert(consensus.hashGenesisBlock == uint256S("0xc863ecd42bbb8607e96fa4eb807fa9b94e4fd3896b0ad0ecea7ea5157cfcee20"));
         //assert(genesis.hashMerkleRoot == uint256S("0xfb62495efd8ef2c57554943c9b3783f863d39b5ca1271e4bc29c271785dd61ac"));
@@ -223,8 +223,8 @@ public:
         genesis = CreateGenesisBlock(1296688602, 414098458, 0x1d00ffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        std::cout << "Testnest hashGenesisBlock: " << consensus.hashGenesisBlock.ToString << "\n";
-        std::cout << "Testnest hashMerkleRoot: " << genesis.hashMerkleRoot.ToString << "\n";
+        std::cout << "Testnest hashGenesisBlock: " << consensus.hashGenesisBlock.ToString() << "\n";
+        std::cout << "Testnest hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << "\n";
 
         //assert(consensus.hashGenesisBlock == uint256S("0x3205c57642e8757334fec8cb6c3afb1e3fc47aea770acc8f312e42c4227e88a7"));
         //assert(genesis.hashMerkleRoot == uint256S("0xfb62495efd8ef2c57554943c9b3783f863d39b5ca1271e4bc29c271785dd61ac"));
@@ -312,8 +312,8 @@ public:
         genesis = CreateGenesisBlock(1503882000, 2, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        std::cout << "Regtest hashGenesisBlock: " << consensus.hashGenesisBlock.ToString << "\n";
-        std::cout << "Regtest hashMerkleRoot: " << genesis.hashMerkleRoot.ToString << "\n";
+        std::cout << "Regtest hashGenesisBlock: " << consensus.hashGenesisBlock.ToString() << "\n";
+        std::cout << "Regtest hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << "\n";
 
         //assert(consensus.hashGenesisBlock == uint256S("0xc9ac230ae9f3c73d6426aaa4b24b9597665b3fcbdb1b9c785ec90ff99601b477"));
         //assert(genesis.hashMerkleRoot == uint256S("0xfb62495efd8ef2c57554943c9b3783f863d39b5ca1271e4bc29c271785dd61ac"));
