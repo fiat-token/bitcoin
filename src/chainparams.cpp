@@ -120,11 +120,8 @@ public:
         genesis = CreateGenesisBlock(1231006505, 2083236893, 0x1d00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        std::cout << "Mainnet hashGenesisBlock: " << consensus.hashGenesisBlock.ToString() << "\n";
-        std::cout << "Mainnet hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << "\n";
-
-        //assert(consensus.hashGenesisBlock == uint256S("0xc863ecd42bbb8607e96fa4eb807fa9b94e4fd3896b0ad0ecea7ea5157cfcee20"));
-        //assert(genesis.hashMerkleRoot == uint256S("0xfb62495efd8ef2c57554943c9b3783f863d39b5ca1271e4bc29c271785dd61ac"));
+        assert(consensus.hashGenesisBlock == uint256S("0xd8e1369de8594097fb432b33501d0d681553223ea0a68f865197d12880d4bfef"));
+        assert(genesis.hashMerkleRoot == uint256S("0x50632f4a73ae6d65fc78fb693af5aa6718a5a0251fd806fa5a22f0896dd9dde0"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.push_back(CDNSSeedData("bitcoin.sipa.be", "seed.bitcoin.sipa.be", true)); // Pieter Wuille, only supports x1, x5, x9, and xd
@@ -223,11 +220,8 @@ public:
         genesis = CreateGenesisBlock(1296688602, 414098458, 0x1d00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        std::cout << "Testnest hashGenesisBlock: " << consensus.hashGenesisBlock.ToString() << "\n";
-        std::cout << "Testnest hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << "\n";
-
-        //assert(consensus.hashGenesisBlock == uint256S("0x3205c57642e8757334fec8cb6c3afb1e3fc47aea770acc8f312e42c4227e88a7"));
-        //assert(genesis.hashMerkleRoot == uint256S("0xfb62495efd8ef2c57554943c9b3783f863d39b5ca1271e4bc29c271785dd61ac"));
+        assert(consensus.hashGenesisBlock == uint256S("0x441f9ce9cf54d4c93be62ab3cc77b33b6a6d2771465b6812ab822ed9436cee9a"));
+        assert(genesis.hashMerkleRoot == uint256S("0x50632f4a73ae6d65fc78fb693af5aa6718a5a0251fd806fa5a22f0896dd9dde0"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -253,7 +247,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            ( 546, uint256S("000000002a936ca763904c3c35fce2f3556c559c0214345d31b1bcebf76acb70")),
+            ( 546, uint256S("441f9ce9cf54d4c93be62ab3cc77b33b6a6d2771465b6812ab822ed9436cee9a")),
         };
 
         chainTxData = ChainTxData{
@@ -312,11 +306,8 @@ public:
         genesis = CreateGenesisBlock(1503882000, 2, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
-        std::cout << "Regtest hashGenesisBlock: " << consensus.hashGenesisBlock.ToString() << "\n";
-        std::cout << "Regtest hashMerkleRoot: " << genesis.hashMerkleRoot.ToString() << "\n";
-
-        //assert(consensus.hashGenesisBlock == uint256S("0xc9ac230ae9f3c73d6426aaa4b24b9597665b3fcbdb1b9c785ec90ff99601b477"));
-        //assert(genesis.hashMerkleRoot == uint256S("0xfb62495efd8ef2c57554943c9b3783f863d39b5ca1271e4bc29c271785dd61ac"));
+        assert(consensus.hashGenesisBlock == uint256S("0xc9ac230ae9f3c73d6426aaa4b24b9597665b3fcbdb1b9c785ec90ff99601b477"));
+        assert(genesis.hashMerkleRoot == uint256S("0x50632f4a73ae6d65fc78fb693af5aa6718a5a0251fd806fa5a22f0896dd9dde0"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
