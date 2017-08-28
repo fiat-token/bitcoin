@@ -25,6 +25,7 @@
 #include "util.h"
 #include "ui_interface.h"
 #include "utilmoneystr.h"
+#include <iostream>
 
 #include <assert.h>
 
@@ -3594,6 +3595,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     }
 
     uiInterface.InitMessage(_("Loading wallet..."));
+    std::cout << "inizio\n";
 
     int64_t nStart = GetTimeMillis();
     bool fFirstRun = true;
@@ -3601,6 +3603,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     DBErrors nLoadWalletRet = walletInstance->LoadWallet(fFirstRun);
     if (nLoadWalletRet != DB_LOAD_OK)
     {
+        std::cout << "1\n";
         if (nLoadWalletRet == DB_CORRUPT) {
             InitError(strprintf(_("Error loading %s: Wallet corrupted"), walletFile));
             return NULL;
@@ -3628,6 +3631,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
 
     if (GetBoolArg("-upgradewallet", fFirstRun))
     {
+        std::cout << "2\n";
         int nMaxVersion = GetArg("-upgradewallet", 0);
         if (nMaxVersion == 0) // the -upgradewallet without argument case
         {
@@ -3647,6 +3651,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
 
     if (fFirstRun)
     {
+        std::cout << "3\n";
         // Create new keyUser and set as default key
         if (GetBoolArg("-usehd", DEFAULT_USE_HD_WALLET) && !walletInstance->IsHDEnabled()) {
             // generate a new master key
@@ -3680,7 +3685,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     LogPrintf(" wallet      %15dms\n", GetTimeMillis() - nStart);
 
     RegisterValidationInterface(walletInstance);
-
+    std::cout << "5\n";
     CBlockIndex *pindexRescan = chainActive.Tip();
     if (GetBoolArg("-rescan", false))
         pindexRescan = chainActive.Genesis();
@@ -3721,6 +3726,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
         // Restore wallet transaction metadata after -zapwallettxes=1
         if (GetBoolArg("-zapwallettxes", false) && GetArg("-zapwallettxes", "1") != "2")
         {
+            std::cout << "6\n";
             CWalletDB walletdb(walletFile);
 
             BOOST_FOREACH(const CWalletTx& wtxOld, vWtx)
@@ -3751,7 +3757,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
         LogPrintf("mapWallet.size() = %u\n",       walletInstance->mapWallet.size());
         LogPrintf("mapAddressBook.size() = %u\n",  walletInstance->mapAddressBook.size());
     }
-
+    std::cout << "fine\n";
     return walletInstance;
 }
 
