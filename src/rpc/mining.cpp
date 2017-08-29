@@ -126,7 +126,6 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int am
     std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
     if (!ProcessNewBlock(Params(), shared_pblock, true, NULL))
         throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
-    ++nHeight;
     blockHashes.push_back(pblock->GetHash().GetHex());
 
     //mark script as important because it was used at least for one coinbase output if the script came from the wallet
