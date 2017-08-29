@@ -169,7 +169,7 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int am
 
     return generateBlocks(coinbaseScript, nGenerate, nMaxTries, true);
 }
-*/
+
 
 UniValue generatetoaddress(const JSONRPCRequest& request)
 {
@@ -203,6 +203,7 @@ UniValue generatetoaddress(const JSONRPCRequest& request)
 
     return generateBlocks(coinbaseScript, nGenerate, nMaxTries, false);
 }
+*/
 
 // nuove funzioni
 UniValue generate(const JSONRPCRequest& request)
@@ -231,9 +232,33 @@ UniValue generate(const JSONRPCRequest& request)
     if (coinbaseScript->reserveScript.empty())
         throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
 
-    return generateBlocks(coinbaseScript, 1, nMaxTries, true, 0);
+    return generateBlocks(coinbaseScript, 0);
 }
 
+UniValue generatetoaddress(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
+        throw runtime_error(
+            "generatetoaddress nblocks address (maxtries)\n"
+            "\nMine blocks immediately to a specified address (before the RPC call returns)\n"
+            "\nArguments:\n"
+            "1. nAmount      (numeric, required) Coinbase reward.\n"
+            "2. address      (string, required) The address to send the newly generated coin to.\n"
+            "\nResult:\n"
+            "[ blockhashes ]     (array) hashes of blocks generated\n"
+        );
+
+    int nAmount = request.params[0].get_int();
+
+    CBitcoinAddress address(request.params[1].get_str());
+    if (!address.IsValid())
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error: Invalid address");
+    
+    boost::shared_ptr<CReserveScript> coinbaseScript(new CReserveScript());
+    coinbaseScript->reserveScript = GetScriptForDestination(address.Get());
+
+    return generateBlocks(coinbaseScript, nAmount);
+}
 ///
 
 UniValue getmininginfo(const JSONRPCRequest& request)
