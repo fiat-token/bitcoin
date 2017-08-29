@@ -115,13 +115,14 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int am
     while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
         ++pblock->nNonce;
         --nMaxTries;
+        if (nMaxTries == 0) {
+            break;
+        }
+        if (pblock->nNonce == nInnerLoopCount) {
+            continue;
+        }
     }
-    if (nMaxTries == 0) {
-        break;
-    }
-    if (pblock->nNonce == nInnerLoopCount) {
-        continue;
-    }
+
     std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
     if (!ProcessNewBlock(Params(), shared_pblock, true, NULL))
         throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
