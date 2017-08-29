@@ -74,7 +74,7 @@ static CBaseRegTestParams regTestParams;
  public:
      CBaseFiatNetParams()
      {
-         nRPCPort = 8080;
+         nRPCPort = 18332;
          strDataDir = "fiatnet";
      }
  };
