@@ -13,6 +13,7 @@
 const std::string CBaseChainParams::MAIN = "main";
 const std::string CBaseChainParams::TESTNET = "test";
 const std::string CBaseChainParams::REGTEST = "regtest";
+const std::string CBaseChainParams::FIATNET = "fiatnet";
 
 void AppendParamsHelpMessages(std::string& strUsage, bool debugHelp)
 {
@@ -65,6 +66,20 @@ public:
 };
 static CBaseRegTestParams regTestParams;
 
+/*
+ * FiatNet
+ */
+ class CBaseFiatNetParams : public CBaseChainParams
+ {
+ public:
+     CBaseFiatNetParams()
+     {
+         nRPCPort = 8080;
+         strDataDir = "fiatnet";
+     }
+ };
+ static CBaseFiatNetParams fiatNetParams;
+
 static CBaseChainParams* pCurrentBaseParams = 0;
 
 const CBaseChainParams& BaseParams()
@@ -81,6 +96,8 @@ CBaseChainParams& BaseParams(const std::string& chain)
         return testNetParams;
     else if (chain == CBaseChainParams::REGTEST)
         return regTestParams;
+    else if (chain == CBaseChainParams::FIATNET)
+        return fiatNetParams;        
     else
         throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
@@ -94,6 +111,7 @@ std::string ChainNameFromCommandLine()
 {
     bool fRegTest = GetBoolArg("-regtest", false);
     bool fTestNet = GetBoolArg("-testnet", false);
+    bool fFiatNet = GetBoolArg("-fiatnet", false);
 
     if (fTestNet && fRegTest)
         throw std::runtime_error("Invalid combination of -regtest and -testnet.");
@@ -101,6 +119,8 @@ std::string ChainNameFromCommandLine()
         return CBaseChainParams::REGTEST;
     if (fTestNet)
         return CBaseChainParams::TESTNET;
+    if (fFiatNet)
+        return CBaseChainParams::FIATNET;        
     return CBaseChainParams::MAIN;
 }
 

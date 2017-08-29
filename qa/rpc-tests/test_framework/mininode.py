@@ -1613,6 +1613,7 @@ class NodeConn(asyncore.dispatcher):
         "mainnet": b"\xf9\xbe\xb4\xd9",   # mainnet
         "testnet3": b"\x0b\x11\x09\x07",  # testnet3
         "regtest": b"\xfa\xbf\xb5\xda",   # regtest
+        "fiatnet": b"\xf1\xa7\x43\x7c",   # fiatnet f1 a7 43 7c
     }
 
     def __init__(self, dstaddr, dstport, rpc, callback, net="regtest", services=NODE_NETWORK, send_version=True):
