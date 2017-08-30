@@ -96,6 +96,60 @@ UniValue getnetworkhashps(const JSONRPCRequest& request)
     return GetNetworkHashPS(request.params.size() > 0 ? request.params[0].get_int() : 120, request.params.size() > 1 ? request.params[1].get_int() : -1);
 }
 
+UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int nGenerate, uint64_t nMaxTries, bool keepScript, int amount)
+{
+    static const int nInnerLoopCount = 0x10000;
+    int nHeightStart = 0;
+    int nHeightEnd = 0;
+    int nHeight = 0;
+
+    {   // Don't keep cs_main locked
+        LOCK(cs_main);
+        nHeightStart = chainActive.Height();
+        nHeight = nHeightStart;
+        nHeightEnd = nHeightStart+nGenerate;
+    }
+    unsigned int nExtraNonce = 0;
+    UniValue blockHashes(UniValue::VARR);
+    while (nHeight < nHeightEnd)
+    {
+        if (Params().NetworkIDString()=="fiatnet")
+            std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript,true,amount));
+        else
+            std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(Params()).CreateNewBlock(coinbaseScript->reserveScript));
+        if (!pblocktemplate.get())
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new block");
+        CBlock *pblock = &pblocktemplate->block;
+        {
+            LOCK(cs_main);
+            IncrementExtraNonce(pblock, chainActive.Tip(), nExtraNonce);
+        }
+        while (nMaxTries > 0 && pblock->nNonce < nInnerLoopCount && !CheckProofOfWork(pblock->GetHash(), pblock->nBits, Params().GetConsensus())) {
+            ++pblock->nNonce;
+            --nMaxTries;
+        }
+        if (nMaxTries == 0) {
+            break;
+        }
+        if (pblock->nNonce == nInnerLoopCount) {
+            continue;
+        }
+        std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(*pblock);
+        if (!ProcessNewBlock(Params(), shared_pblock, true, NULL))
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
+        ++nHeight;
+        blockHashes.push_back(pblock->GetHash().GetHex());
+
+        //mark script as important because it was used at least for one coinbase output if the script came from the wallet
+        if (keepScript)
+        {
+            coinbaseScript->KeepScript();
+        }
+    }
+    return blockHashes;
+}
+
+/*
 UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int amount)
 {
     static const int nInnerLoopCount = 0x10000;
@@ -133,8 +187,9 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int am
 
     return blockHashes;
 }
+*/
 
-/*UniValue generate(const JSONRPCRequest& request)
+UniValue generate(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 1 || request.params.size() > 2)
         throw runtime_error(
@@ -166,8 +221,12 @@ UniValue generateBlocks(boost::shared_ptr<CReserveScript> coinbaseScript, int am
     //throw an error if no script was provided
     if (coinbaseScript->reserveScript.empty())
         throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
+    
+    if (Params().NetworkIDString()=="fiatnet")
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "generate is not allowed on fiatnet");
 
-    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, true);
+        Params().NetworkIDString()
+    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, true, 0);
 }
 
 
@@ -197,26 +256,31 @@ UniValue generatetoaddress(const JSONRPCRequest& request)
     CBitcoinAddress address(request.params[1].get_str());
     if (!address.IsValid())
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error: Invalid address");
+
+    if (Params().NetworkIDString()=="fiatnet")
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "generatetoaddress is not allowed on fiatnet");
     
     boost::shared_ptr<CReserveScript> coinbaseScript(new CReserveScript());
     coinbaseScript->reserveScript = GetScriptForDestination(address.Get());
 
-    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, false);
+    return generateBlocks(coinbaseScript, nGenerate, nMaxTries, false, 0);
 }
-*/
 
 // nuove funzioni
-UniValue generate(const JSONRPCRequest& request)
+UniValue createblock(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 0)
         throw runtime_error(
-            "generate 1 block\n"
+            "generate 1 block with no reward\n"
             "\nMine 1 block immediately (before the RPC call returns)\n"
             "\nArguments:\n"
             "\n none \n"
             "\nResult:\n"
             "[ blockhashes ]     \n"
-            );
+            "\nExamples:\n"
+            "\createblock \n"
+            + HelpExampleCli("createblock")
+        );
     
     // to be deleted
     uint64_t nMaxTries = 1000000;
@@ -232,32 +296,41 @@ UniValue generate(const JSONRPCRequest& request)
     if (coinbaseScript->reserveScript.empty())
         throw JSONRPCError(RPC_INTERNAL_ERROR, "No coinbase script available (mining requires a wallet)");
 
-    return generateBlocks(coinbaseScript, 0);
+    if (Params().NetworkIDString()=="regtest")
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "createblock is not allowed on regtest");
+
+    return generateBlocks(coinbaseScript, 1, nMaxTries, false, 0);
 }
 
-UniValue generatetoaddress(const JSONRPCRequest& request)
+UniValue createblocktoaddress(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
-            "generatetoaddress nblocks address (maxtries)\n"
-            "\nMine blocks immediately to a specified address (before the RPC call returns)\n"
+            "create 1 block with custom coinbase to address\n"
+            "\nMine 1 block immediately to a specified address (before the RPC call returns)\n"
             "\nArguments:\n"
-            "1. nAmount      (numeric, required) Coinbase reward.\n"
-            "2. address      (string, required) The address to send the newly generated coin to.\n"
+            "1. amount      (numeric, required) Coinbase reward.\n"
+            "2. address     (string, required) The address to send the newly generated coin to.\n"
             "\nResult:\n"
             "[ blockhashes ]     (array) hashes of blocks generated\n"
+            "\nExamples:\n"
+            "\nGenerate 30 coins to myaddress\n"
+            + HelpExampleCli("createblocktoaddress", "30 \"myaddress\"")
         );
 
-    int nAmount = request.params[0].get_int();
+    int amount = request.params[0].get_int();
 
     CBitcoinAddress address(request.params[1].get_str());
     if (!address.IsValid())
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error: Invalid address");
+
+    if (Params().NetworkIDString()=="regtest")
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "createblocktoaddress is not allowed on regtest");
     
     boost::shared_ptr<CReserveScript> coinbaseScript(new CReserveScript());
     coinbaseScript->reserveScript = GetScriptForDestination(address.Get());
 
-    return generateBlocks(coinbaseScript, nAmount);
+    return generateBlocks(coinbaseScript, 1, nMaxTries, false, amount);
 }
 ///
 
@@ -982,6 +1055,8 @@ static const CRPCCommand commands[] =
 
     { "generating",         "generate",               &generate,               true,  {"nblocks","maxtries"} },
     { "generating",         "generatetoaddress",      &generatetoaddress,      true,  {"nblocks","address","maxtries"} },
+    { "generating",         "createblock",            &createblock,            true,  {} },
+    { "generating",         "createblocktoaddress",   &createblocktoaddress,   true,  {"amount","address"} },
 
     { "util",               "estimatefee",            &estimatefee,            true,  {"nblocks"} },
     { "util",               "estimatepriority",       &estimatepriority,       true,  {"nblocks"} },
