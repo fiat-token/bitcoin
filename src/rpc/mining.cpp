@@ -271,7 +271,7 @@ UniValue createblock(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 0)
         throw runtime_error(
-            "generate 1 block with no reward\n"
+            "createblock (empty)\n"
             "\nMine 1 block immediately (before the RPC call returns)\n"
             "\nArguments:\n"
             "\n none \n"
@@ -305,7 +305,7 @@ UniValue createblocktoaddress(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw runtime_error(
-            "create 1 block with custom coinbase to address\n"
+            "createblocktoaddress amount address\n"
             "\nMine 1 block immediately to a specified address (before the RPC call returns)\n"
             "\nArguments:\n"
             "1. amount      (numeric, required) Coinbase reward.\n"
