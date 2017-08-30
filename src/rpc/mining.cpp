@@ -279,7 +279,7 @@ UniValue createblock(const JSONRPCRequest& request)
             "[ blockhashes ]     \n"
             "\nExamples:\n"
             "\n createblock \n"
-            + HelpExampleCli("createblock")
+            + HelpExampleCli("createblock", "")
         );
     
     uint64_t nMaxTries = 1000000;
