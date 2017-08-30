@@ -225,7 +225,6 @@ UniValue generate(const JSONRPCRequest& request)
     if (Params().NetworkIDString()=="fiatnet")
         throw JSONRPCError(RPC_INTERNAL_ERROR, "generate is not allowed on fiatnet");
 
-        Params().NetworkIDString()
     return generateBlocks(coinbaseScript, nGenerate, nMaxTries, true, 0);
 }
 
@@ -282,7 +281,6 @@ UniValue createblock(const JSONRPCRequest& request)
             + HelpExampleCli("createblock")
         );
     
-    // to be deleted
     uint64_t nMaxTries = 1000000;
 
     boost::shared_ptr<CReserveScript> coinbaseScript;
@@ -317,7 +315,8 @@ UniValue createblocktoaddress(const JSONRPCRequest& request)
             "\nGenerate 30 coins to myaddress\n"
             + HelpExampleCli("createblocktoaddress", "30 \"myaddress\"")
         );
-
+    
+    uint64_t nMaxTries = 1000000;
     int amount = request.params[0].get_int();
 
     CBitcoinAddress address(request.params[1].get_str());
