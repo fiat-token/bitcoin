@@ -188,7 +188,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
     if (Params().NetworkIDString()=="fiatnet")
     {
-        CAmount nAmount = amount * FIATTOKEN;
+        CAmount nAmount = amount * 1;
         coinbaseTx.vout[0].nValue = nFees + nAmount;
     }   
     else
