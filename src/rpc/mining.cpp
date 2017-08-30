@@ -271,7 +271,7 @@ UniValue createblock(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 0)
         throw runtime_error(
-            "createblock (empty)\n"
+            "createblock\n"
             "\nMine 1 block immediately (before the RPC call returns)\n"
             "\nArguments:\n"
             "\n none \n"
