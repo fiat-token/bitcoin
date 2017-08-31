@@ -189,7 +189,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     if (Params().NetworkIDString()=="fiatnet")
     {
         CAmount nAmount = amount * 1;
-        coinbaseTx.vout[0].nValue = nFees + nAmount;
+        coinbaseTx.vout[0].nValue = nAmount;
     }   
     else
         coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
