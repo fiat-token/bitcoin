@@ -46,6 +46,7 @@
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/ucrt",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/shared",
                 "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/winrt",
+                "C:/local/boost_1_65_0",
                 "${workspaceRoot}"
             ],
             "defines": [
@@ -60,6 +61,7 @@
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/ucrt",
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/shared",
                     "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/winrt",
+                    "C:/local/boost_1_65_0",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
