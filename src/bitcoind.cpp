@@ -190,7 +190,7 @@ bool AppInit(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello kal!\n";
+    std::cout << "Hello kal!!\n";
     SetupEnvironment();
 
     // Connect bitcoind signal handlers
