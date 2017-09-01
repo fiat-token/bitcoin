@@ -11,14 +11,11 @@
 #include <stdlib.h>
 #include <string>
 
-#include "util.h" // for initializing "COIN" from bitcoin.conf
-#include <iostream>
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
 
-static const CAmount COIN = GetArg("-coin", 100000000);
-std::cout << "coin modificato: " << COIN << "-";
+static const CAmount COIN = -22;
 static const CAmount FIATTOKEN = 10000;
 static const CAmount CENT = 1000000;
 
