@@ -22,12 +22,8 @@ static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 //inline int setMaturity() { std::string mat = mapMultiArgs.count("-maturity") ? mapMultiArgs.at("-maturity")[0] : "10"; return std::stoi(mat); }
 inline int setMaturity() {
     std::cout << "begin\n";
-    if(mapMultiArgs.count("-maturity"))
-    {
-        for( auto meh : mapMultiArgs.at("-maturity"))
-        {
-             std::cout << meh << "\n";
-        }
+    for(std::map<std::string, std::vector<std::string> >::iterator it = mapMultiArgs.begin(); it != mapMultiArgs.end(); ++it) 
+        std::cout << it->first <<  "\n";
     }
         
     return 5; 
