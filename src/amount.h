@@ -10,14 +10,11 @@
 
 #include <stdlib.h>
 #include <string>
-#include <iostream>
-
+#include "util.h"
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
-
-std::cout << "pre pippo\n";
-static const CAmount COIN = 50;
-std::cout << COIN << "\n";
+inline int setCoin() { return GetArg("-coin", ""); }
+static const CAmount COIN = setCoin();
 static const CAmount FIATTOKEN = 10000;
 static const CAmount CENT = 1000000;
 

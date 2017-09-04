@@ -65,6 +65,17 @@
         "xmemory0": "cpp",
         "xstddef": "cpp",
         "xtr1common": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "codecvt": "cpp",
+        "complex": "cpp",
+        "numeric": "cpp",
+        "random": "cpp",
+        "stack": "cpp",
+        "strstream": "cpp",
+        "valarray": "cpp",
+        "cctype": "cpp",
+        "csignal": "cpp",
+        "cstdarg": "cpp",
+        "cwctype": "cpp"
     }
 }
