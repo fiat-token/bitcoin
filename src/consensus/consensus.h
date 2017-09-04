@@ -23,9 +23,12 @@ static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 inline int setMaturity() 
 {
     std::cout << "begin\n";
-    for(auto it = mapMultiArgs.begin(); it != mapMultiArgs.end(); ++it) 
+    if(!mapMultiArgs.empty)
+    {
+        for(auto it = mapMultiArgs.begin(); it != mapMultiArgs.end(); ++it) 
         std::cout << it->first <<  "\n";
-        
+    }
+
     return 5; 
 }
 static const int COINBASE_MATURITY = setMaturity();
