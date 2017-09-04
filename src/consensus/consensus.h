@@ -23,7 +23,7 @@ static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 inline int setMaturity() 
 {
     std::cout << "begin\n";
-    if(!mapMultiArgs.empty)
+    if(!mapMultiArgs.empty())
     {
         for(auto it = mapMultiArgs.begin(); it != mapMultiArgs.end(); ++it) 
         std::cout << it->first <<  "\n";
