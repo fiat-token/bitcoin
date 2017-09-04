@@ -8,6 +8,7 @@
 
 #include "util.h"
 #include <stdint.h>
+#include <iostream>
 
 /** The maximum allowed size for a serialized block, in bytes (only for buffer size limits) */
 static const unsigned int MAX_BLOCK_SERIALIZED_SIZE = 4000000;
@@ -19,7 +20,14 @@ static const unsigned int MAX_BLOCK_BASE_SIZE = 1000000;
 static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 //inline int setMaturity() { std::string mat = mapMultiArgs.count("-maturity") ? mapMultiArgs.at("-maturity")[0] : "10"; return std::stoi(mat); }
-inline int setMaturity() { std::string mat = mapMultiArgs.at("-maturity")[0]; return std::stoi(mat); }
+inline int setMaturity() {
+    std::cout << "begin\n";
+        for( auto meh : mapMultiArgs.at("-maturity"))
+    {
+         std::cout << meh << "\n";
+    }
+    return 5; 
+}
 static const int COINBASE_MATURITY = setMaturity();
 
 /** Flags for nSequence and nLockTime locks */
