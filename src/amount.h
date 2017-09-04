@@ -14,7 +14,7 @@
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
-inline int setCoin() { auto myCoin = mapMultiArgs.count("-coin") ? mapMultiArgs.at("-coin") : "100000000"; return std::stoi(myCoin); }
+inline int setCoin() { std::string myCoin = mapMultiArgs.count("-coin") ? mapMultiArgs.at("-coin")[0] : "100000000"; return std::stoi(myCoin); }
 static const CAmount COIN = setCoin();
 static const CAmount FIATTOKEN = 10000;
 static const CAmount CENT = 1000000;
