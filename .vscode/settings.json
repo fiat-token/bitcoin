@@ -76,6 +76,7 @@
         "cctype": "cpp",
         "csignal": "cpp",
         "cstdarg": "cpp",
-        "cwctype": "cpp"
+        "cwctype": "cpp",
+        "*.ipp": "cpp"
     }
 }
