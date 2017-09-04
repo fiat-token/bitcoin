@@ -7,10 +7,11 @@
 #define BITCOIN_AMOUNT_H
 
 #include "serialize.h"
+#include "util.h"
 
 #include <stdlib.h>
 #include <string>
-#include "util.h"
+
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
 inline int setCoin() { std::string myCoin = GetArg("-coin", "100000000"); return std::stoi(myCoin); }
