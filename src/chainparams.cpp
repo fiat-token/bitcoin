@@ -340,7 +340,7 @@ static CRegTestParams regTestParams;
 /**
  * Virtual Euro
  */
- class CFiatNetParams : public CChainParams {
+class CFiatNetParams : public CChainParams {
 public:
     CFiatNetParams() {
         strNetworkID = "fiatnet";
