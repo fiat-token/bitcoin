@@ -190,11 +190,13 @@ bool AppInit(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello kal!!\n";
+    std::cout << "pre SetupEnvironment\n";
     SetupEnvironment();
 
     // Connect bitcoind signal handlers
+    std::cout << "pre noui_connect\n";
     noui_connect();
 
+    std::cout << "pre AppInit\n";
     return (AppInit(argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);
 }
