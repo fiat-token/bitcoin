@@ -20,18 +20,8 @@ static const unsigned int MAX_BLOCK_BASE_SIZE = 1000000;
 static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 //inline int setMaturity() { std::string mat = mapMultiArgs.count("-maturity") ? mapMultiArgs.at("-maturity")[0] : "10"; return std::stoi(mat); }
-inline int setMaturity() 
-{
-    std::cout << "begin\n";
-    if(!mapMultiArgs.empty())
-    {
-        for(auto it = mapMultiArgs.begin(); it != mapMultiArgs.end(); ++it) 
-        std::cout << it->first <<  "\n";
-    }
 
-    return 5; 
-}
-static const int COINBASE_MATURITY = setMaturity();
+static const int COINBASE_MATURITY = 7;
 
 /** Flags for nSequence and nLockTime locks */
 enum {

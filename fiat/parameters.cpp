@@ -8,6 +8,7 @@
 class Parameters
 {
   public:
+    //GET
     std::map<std::string, std::string> get(std::string filename)
     {
       std::ifstream myfile;
@@ -31,10 +32,13 @@ class Parameters
       return mapResult;
     }
 
+    //SPLIT
     std::vector<std::string> split(std::string strToBeSplitted, std::string pattern)
     {
       std::regex regex(pattern);
       std::vector<std::string> result { std::sregex_token_iterator(strToBeSplitted.begin(), strToBeSplitted.end(), regex, -1), {} };
       return result;
     }
+
+    //TODO: CHECK
 };
