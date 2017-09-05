@@ -11,7 +11,7 @@
 
 #include <stdlib.h>
 #include <string>
-#include "fiat/parameters.cpp"
+#include "parameters.cpp"
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
