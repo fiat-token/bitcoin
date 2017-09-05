@@ -23,11 +23,7 @@ class Parameters
         mapResult[keyAndValue[0]] = keyAndValue[1];
       }
       myfile.close();
-
-      for(auto it = mapResult.begin(); it != mapResult.end(); ++it)
-      {
-          std::cout << it->first <<  " -> " << it->second[0] << "\n";
-      }
+      
       return mapResult;
     }
 
