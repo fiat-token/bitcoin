@@ -139,16 +139,8 @@ UniValue ValueFromAmount(const CAmount& amount)
     int64_t n_abs = (sign ? -amount : amount);
     int64_t quotient;
     int64_t remainder;
-    if(Params().NetworkIDString()=="fiatnet")
-    {
-        quotient = n_abs / FIATTOKEN;
-        remainder = n_abs % FIATTOKEN;
-    }
-    else
-    {
-        quotient = n_abs / COIN;
-        remainder = n_abs % COIN;
-    }
+    quotient = n_abs / COIN;
+    remainder = n_abs % COIN;
     return UniValue(UniValue::VNUM,
             strprintf("%s%d.%08d", sign ? "-" : "", quotient, remainder));
 }
