@@ -8,10 +8,10 @@
 
 #include "serialize.h"
 #include "util.h"
+#include "parameters.cpp"
 
 #include <stdlib.h>
 #include <string>
-#include "parameters.cpp"
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;

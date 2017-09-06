@@ -11,7 +11,6 @@
 #include "utilstrencodings.h"
 
 #include <assert.h>
-#include <iostream>
 
 #include <boost/assign/list_of.hpp>
 

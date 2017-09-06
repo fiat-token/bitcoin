@@ -25,8 +25,6 @@
 
 #include <stdio.h>
 
-#include <iostream>
-
 /* Introduction text for doxygen: */
 
 /*! \mainpage Developer documentation
@@ -190,13 +188,10 @@ bool AppInit(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-    std::cout << "pre SetupEnvironment\n";
     SetupEnvironment();
 
     // Connect bitcoind signal handlers
-    std::cout << "pre noui_connect\n";
     noui_connect();
 
-    std::cout << "pre AppInit\n";
     return (AppInit(argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);
 }
