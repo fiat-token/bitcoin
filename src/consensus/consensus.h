@@ -7,6 +7,7 @@
 #define BITCOIN_CONSENSUS_CONSENSUS_H
 
 #include "util.h"
+#include "parameters.cpp"
 #include <stdint.h>
 #include <iostream>
 
@@ -21,7 +22,8 @@ static const int64_t MAX_BLOCK_SIGOPS_COST = 80000;
 /** Coinbase transaction outputs can only be spent after this number of new blocks (network rule) */
 //inline int setMaturity() { std::string mat = mapMultiArgs.count("-maturity") ? mapMultiArgs.at("-maturity")[0] : "10"; return std::stoi(mat); }
 
-static const int COINBASE_MATURITY = 7;
+inline int setMaturity() { auto param = Parameters().get("bitcoin.conf"); std::string myMaturity = param.at("maturity"); return std::stoi(myMaturity); }
+static const int COINBASE_MATURITY = setMaturity();
 
 /** Flags for nSequence and nLockTime locks */
 enum {
