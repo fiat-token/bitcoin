@@ -15,7 +15,7 @@
 
 /** Amount in satoshis (Can be negative) */
 typedef int64_t CAmount;
-inline int setCoin() { auto param = Parameters().get("bitcoin.conf"); std::string myCoin = param.at("-coin"); return std::stoi(myCoin); }
+inline int setCoin() { auto param = Parameters().get("bitcoin.conf"); std::string myCoin = param.at("coin"); return std::stoi(myCoin); }
 static const CAmount COIN = setCoin();
 static const CAmount FIATTOKEN = 10000;
 static const CAmount CENT = 1000000;
