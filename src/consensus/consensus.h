@@ -7,6 +7,7 @@
 #define BITCOIN_CONSENSUS_CONSENSUS_H
 
 #include "util.h"
+#include "amount.h"
 #include <stdint.h>
 #include <iostream>
 
