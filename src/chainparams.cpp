@@ -337,6 +337,90 @@ public:
 };
 static CRegTestParams regTestParams;
 
+/**
+ * Virtual Euro
+ */
+ class CFiatNetParams : public CChainParams {
+public:
+    CFiatNetParams() {
+        strNetworkID = "fiatnet";
+        consensus.nSubsidyHalvingInterval = 150;
+        consensus.BIP34Height = 100000000; // BIP34 has not activated on fiatnet (far in the future so block v1 are not rejected in tests)
+        consensus.BIP34Hash = uint256();
+        consensus.BIP65Height = 1351; // BIP65 activated on fiatnet (Used in rpc activation tests)
+        consensus.BIP66Height = 1251; // BIP66 activated on fiatnet (Used in rpc activation tests)
+        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
+        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.fPowAllowMinDifficultyBlocks = true;
+        consensus.fPowNoRetargeting = true;
+        consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 144; // Faster than normal for fiatnet (144 instead of 2016)
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 999999999999ULL;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 0;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 999999999999ULL;
+
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00");
+
+        // By default assume that the signatures in ancestors of this block are valid.
+        consensus.defaultAssumeValid = uint256S("0x00");
+
+        pchMessageStart[0] = 0xfa;
+        pchMessageStart[1] = 0xbf;
+        pchMessageStart[2] = 0xb5;
+        pchMessageStart[3] = 0xda;
+        nDefaultPort = 18444;
+        nPruneAfterHeight = 1000;
+
+        const char* pszTimestamp = "The Dragon and the Wolf";
+        const CScript genesisOutputScript = CScript() << ParseHex("04678afdb0fe5548271967f1a67130b7105cd6a828e03909a67962e0ea1f61deb649f6bc3f4cef38c4f35504e51ec112de5c384df7ba0b8d578a4c702b6bf11d5f") << OP_CHECKSIG;
+        genesis = CreateGenesisBlock(pszTimestamp, genesisOutputScript, 1503882000, 15, 0x207fffff, 1, 0 * COIN);
+
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0x046260b1af1ebf5a7711223beaee06381cf4fbea92ed8206ac979be1ace5d825"));
+        assert(genesis.hashMerkleRoot == uint256S("0x50632f4a73ae6d65fc78fb693af5aa6718a5a0251fd806fa5a22f0896dd9dde0"));
+
+        vFixedSeeds.clear(); //!< Fiatnet mode doesn't have any fixed seeds.
+        vSeeds.clear();      //!< Fiatnet mode doesn't have any DNS seeds.
+
+        fMiningRequiresPeers = false;
+        fDefaultConsistencyChecks = true;
+        fRequireStandard = false;
+        fMineBlocksOnDemand = true;
+
+        checkpointData = (CCheckpointData){
+            boost::assign::map_list_of
+            ( 0, uint256S("046260b1af1ebf5a7711223beaee06381cf4fbea92ed8206ac979be1ace5d825"))
+        };
+
+        chainTxData = ChainTxData{
+            0,
+            0,
+            0
+        };
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
+        base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
+        base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
+    }
+
+    void UpdateBIP9Parameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout)
+    {
+        consensus.vDeployments[d].nStartTime = nStartTime;
+        consensus.vDeployments[d].nTimeout = nTimeout;
+    }
+};
+static CFiatNetParams fiatNetParams;
+
 static CChainParams *pCurrentParams = 0;
 
 const CChainParams &Params() {
@@ -352,6 +436,8 @@ CChainParams& Params(const std::string& chain)
             return testNetParams;
     else if (chain == CBaseChainParams::REGTEST)
             return regTestParams;
+    else if (chain == CBaseChainParams::FIATNET)
+            return fiatNetParams;
     else
         throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
