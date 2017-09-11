@@ -9,6 +9,7 @@
 #include "chain.h"
 #include "primitives/block.h"
 #include "uint256.h"
+#include "script/generic.hpp"
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
@@ -91,4 +92,15 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&
         return false;
 
     return true;
+}
+
+bool MaybeGenerateProof(CBlockHeader *pblock, CWallet *pwallet)
+{
+#ifdef ENABLE_WALLET
+    SignatureData solution(pblock->proof.solution);
+    bool res = GenericSignScript(*pwallet, *pblock, pblock->proof.challenge, solution);
+    pblock->proof.solution = solution.scriptSig;
+    return res;
+#endif
+    return false;
 }
