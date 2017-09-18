@@ -352,16 +352,17 @@ public:
 static CRegTestParams regTestParams;
 
 /**
- * Virtual Euro
+ * Virtual Token
  */
  class CFiatNetParams : public CChainParams {
 public:
     CFiatNetParams() {
         // sign block script
         const CScript defaultRegtestScript(CScript() << OP_TRUE);
-        CScript genesisChallengeScript = StrHexToScriptWithDefault(GetArg("-signblockscript", ""), defaultRegtestScript);
-        //CScript genesisChallengeScript = StrHexToScriptWithDefault("5121032844652c8258aab441c7d2b679d0463726dc5661e9bf0dfeb33dc4cf5c41b59a2151ae", defaultRegtestScript);
-
+        defaultRegtestScript = CScript() << OP_1 << ParseHex("026cb8116d860093dfbf6a3109c89c788cccbd72253cd26e690f200e8d60a23768") << ParseHex("02a7fc24cf84dea06a05d83eb5bdea5a731a9a42ee7976cc555a14119c73c19269") << ParseHex("02f7c636a03a79f778b9df1fe802e3bce354b3e9e0e5b03cd8e664cecf7fae03c0") << OP_3 << OP_CHECKMULTISIG;
+        CScript genesisChallengeScript = defaultRegtestScript;
+        //CScript genesisChallengeScript = StrHexToScriptWithDefault(GetArg("-signblockscript", ""), defaultRegtestScript);
+        
         strNetworkID = "fiatnet";
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP34Height = 100000000; // BIP34 has not activated on fiatnet (far in the future so block v1 are not rejected in tests)
