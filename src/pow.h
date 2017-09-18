@@ -7,6 +7,7 @@
 #define BITCOIN_POW_H
 
 #include "consensus/params.h"
+#include "wallet/wallet.h"
 
 #include <stdint.h>
 
@@ -19,6 +20,14 @@ unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nF
 
 /** Check whether a block hash satisfies the proof-of-work requirement specified by nBits */
 bool CheckProofOfWork(uint256 hash, unsigned int nBits, const Consensus::Params&);
+
+/** Functions for block sign */
+bool CheckProof(const CBlockHeader& block, const Consensus::Params&);
 bool MaybeGenerateProof(CBlockHeader* pblock, CWallet* pwallet);
+void ResetProof(CBlockHeader& block);
+bool CheckChallenge(const CBlockHeader& block, const CBlockIndex& indexLast, const Consensus::Params&);
+void ResetChallenge(CBlockHeader& block, const CBlockIndex& indexLast, const Consensus::Params&);
+
+CScript CombineBlockSignatures(const CBlockHeader& header, const CScript& scriptSig1, const CScript& scriptSig2);
 
 #endif // BITCOIN_POW_H

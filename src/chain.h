@@ -196,8 +196,9 @@ public:
     int nVersion;
     uint256 hashMerkleRoot;
     unsigned int nTime;
-    unsigned int nBits;
-    unsigned int nNonce;
+    unsigned int nBits; //CHECK if needed
+    unsigned int nNonce; //CHECK if needed
+    CProof proof;
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId;
@@ -224,8 +225,9 @@ public:
         nVersion       = 0;
         hashMerkleRoot = uint256();
         nTime          = 0;
-        nBits          = 0;
-        nNonce         = 0;
+        nBits          = 0; //CHECK if needed
+        nNonce         = 0; //CHECK if needed
+        proof.SetNull();
     }
 
     CBlockIndex()
@@ -240,8 +242,10 @@ public:
         nVersion       = block.nVersion;
         hashMerkleRoot = block.hashMerkleRoot;
         nTime          = block.nTime;
-        nBits          = block.nBits;
-        nNonce         = block.nNonce;
+        nBits          = block.nBits; //CHECK if needed
+        nNonce         = block.nNonce; //CHECK if needed
+        nHeight        = block.nHeight;
+        proof          = block.proof;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -270,8 +274,10 @@ public:
             block.hashPrevBlock = pprev->GetBlockHash();
         block.hashMerkleRoot = hashMerkleRoot;
         block.nTime          = nTime;
-        block.nBits          = nBits;
-        block.nNonce         = nNonce;
+        block.nBits          = nBits; //CHECK if needed
+        block.nNonce         = nNonce; //CHECK if needed
+        block.nHeight        = nHeight;
+        block.proof          = proof;
         return block;
     }
 
@@ -386,8 +392,9 @@ public:
         READWRITE(hashPrev);
         READWRITE(hashMerkleRoot);
         READWRITE(nTime);
-        READWRITE(nBits);
-        READWRITE(nNonce);
+        READWRITE(nBits); //CHECK if needed
+        READWRITE(nNonce); //CHECK if needed
+        READWRITE(proof);
     }
 
     uint256 GetBlockHash() const
@@ -397,8 +404,10 @@ public:
         block.hashPrevBlock   = hashPrev;
         block.hashMerkleRoot  = hashMerkleRoot;
         block.nTime           = nTime;
-        block.nBits           = nBits;
-        block.nNonce          = nNonce;
+        block.nBits           = nBits; //CHECK if needed
+        block.nNonce          = nNonce; //CHECK if needed
+        block.proof           = proof;
+        block.nHeight         = nHeight;
         return block.GetHash();
     }
 
