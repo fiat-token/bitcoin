@@ -179,9 +179,6 @@ public:
     //! pointer to the index of some further predecessor of this block
     CBlockIndex* pskip;
 
-    //! height of the entry in the chain. The genesis block has height 0
-    int nHeight;
-
     //! Which # file this block is stored in (blk?????.dat)
     int nFile;
 
@@ -212,6 +209,8 @@ public:
     unsigned int nTime;
     unsigned int nBits;
     unsigned int nNonce;
+    int nHeight; //! height of the entry in the chain. The genesis block has height 0
+    CProof proof;
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId;
@@ -240,6 +239,7 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
+        proof.SetNull();
     }
 
     CBlockIndex()
@@ -256,6 +256,8 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
+        nHeight        = block.nHeight;
+        proof          = block.proof;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -286,6 +288,8 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.nHeight        = nHeight;
+        block.proof          = proof;
         return block;
     }
 
@@ -405,6 +409,7 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
+        READWRITE(proof);
     }
 
     uint256 GetBlockHash() const
@@ -416,6 +421,8 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        block.nHeight        = nHeight;
+        block.proof          = proof;
         return block.GetHash();
     }
 
