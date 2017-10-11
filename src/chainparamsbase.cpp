@@ -32,20 +32,21 @@ class CBaseMainParams : public CBaseChainParams
 public:
     CBaseMainParams()
     {
-        nRPCPort = 8332;
+        nRPCPort = 18334;
+        strDataDir = "vtknMainnet";
     }
 };
 
 /**
- * Testnet (v3)
+ * Testnet
  */
 class CBaseTestNetParams : public CBaseChainParams
 {
 public:
     CBaseTestNetParams()
     {
-        nRPCPort = 18332;
-        strDataDir = "testnet3";
+        nRPCPort = 18335;
+        strDataDir = "vtknTestnet";
     }
 };
 
@@ -57,8 +58,8 @@ class CBaseRegTestParams : public CBaseChainParams
 public:
     CBaseRegTestParams()
     {
-        nRPCPort = 18332;
-        strDataDir = "regtest";
+        nRPCPort = 18336;
+        strDataDir = "vtknRegtest";
     }
 };
 

@@ -183,8 +183,17 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     coinbaseTx.vin.resize(1);
     coinbaseTx.vin[0].prevout.SetNull();
     coinbaseTx.vout.resize(1);
-    coinbaseTx.vout[0].scriptPubKey = scriptPubKeyIn;
-    coinbaseTx.vout[0].nValue = nFees + GetBlockSubsidy(nHeight, chainparams.GetConsensus());
+    if (nHeight != 1) {
+        coinbaseTx.vout[0].scriptPubKey = CScript() << OP_RETURN;
+        coinbaseTx.vout[0].nValue = 0;
+    } else {
+        uint32_t rewardShards = 100;
+        coinbaseTx.vout.resize(rewardShards);
+        for (unsigned int i = 0; i < rewardShards; i++) {
+            coinbaseTx.vout[i].nValue = MAX_MONEY/rewardShards;
+            coinbaseTx.vout[i].scriptPubKey = chainparams.CoinbaseDestination();
+        }
+    }
     coinbaseTx.vin[0].scriptSig = CScript() << nHeight << OP_0;
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus());
