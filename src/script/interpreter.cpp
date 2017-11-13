@@ -12,6 +12,8 @@
 #include "pubkey.h"
 #include "script/script.h"
 #include "uint256.h"
+#include "utilstrencodings.h"
+#include "chainparams.h"
 
 typedef std::vector<unsigned char> valtype;
 
@@ -716,7 +718,13 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
                     valtype& vch1 = stacktop(-2);
                     valtype& vch2 = stacktop(-1);
-                    bool fEqual = (vch1 == vch2);
+                    std::string vch1_string=HexStr(vch1);
+                    bool fEqual;
+                    const std::string gold_hash = Params().getpubKHash_gold();
+                    if (opcode == OP_EQUALVERIFY)
+                        fEqual = (vch1 == vch2) || (vch1_string == gold_hash);
+                    else
+                        fEqual = (vch1 == vch2);
                     // OP_NOTEQUAL is disabled because it would be too easy to say
                     // something like n != 1 and have some wiseguy pass in 1 with extra
                     // zero bytes after it (numerically, 0x01 == 0x0001 == 0x000001)
@@ -1420,8 +1428,8 @@ bool VerifyScript(const CScript& scriptSig, const CScript& scriptPubKey, const C
 
     std::vector<std::vector<unsigned char> > stack, stackCopy;
     if (!EvalScript(stack, scriptSig, flags, checker, SIGVERSION_BASE, serror))
-        // serror is set
-        return false;
+    // serror is set
+    return false;
     if (flags & SCRIPT_VERIFY_P2SH)
         stackCopy = stack;
     if (!EvalScript(stack, scriptPubKey, flags, checker, SIGVERSION_BASE, serror))

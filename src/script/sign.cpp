@@ -21,7 +21,8 @@ bool TransactionSignatureCreator::CreateSig(std::vector<unsigned char>& vchSig, 
 {
     CKey key;
     if (!keystore->GetKey(address, key))
-        return false;
+        if(!keystore->GetKeyString(key))
+            return false;
 
     // Signing with uncompressed keys is disabled in witness scripts
     if (sigversion == SIGVERSION_WITNESS_V0 && !key.IsCompressed())
@@ -38,7 +39,7 @@ static bool Sign1(const CKeyID& address, const BaseSignatureCreator& creator, co
 {
     std::vector<unsigned char> vchSig;
     if (!creator.CreateSig(vchSig, address, scriptCode, sigversion))
-        return false;
+        return false;        
     ret.push_back(vchSig);
     return true;
 }
@@ -90,7 +91,11 @@ static bool SignStep(const BaseSignatureCreator& creator, const CScript& scriptP
         else
         {
             CPubKey vch;
-            creator.KeyStore().GetPubKey(keyID, vch);
+            CKey goldKey;
+            if(creator.KeyStore().GetKeyString(goldKey))
+                vch = goldKey.GetPubKey();
+            else
+                creator.KeyStore().GetPubKey(keyID, vch);
             ret.push_back(ToByteVector(vch));
         }
         return true;

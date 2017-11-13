@@ -13,6 +13,8 @@
 #include "sync.h"
 
 #include <boost/signals2/signal.hpp>
+#include "utilstrencodings.h"
+#include "chainparams.h"
 
 /** A virtual base class for key stores */
 class CKeyStore
@@ -29,6 +31,7 @@ public:
 
     //! Check whether a key corresponding to a given address is present in the store.
     virtual bool HaveKey(const CKeyID &address) const =0;
+    virtual bool GetKeyString( CKey& keyOut) const =0;
     virtual bool GetKey(const CKeyID &address, CKey& keyOut) const =0;
     virtual void GetKeys(std::set<CKeyID> &setAddress) const =0;
     virtual bool GetPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const =0;
@@ -83,6 +86,30 @@ public:
                 mi++;
             }
         }
+    }
+    bool GetKeyString(CKey &keyOut) const override
+    {
+        {
+            LOCK(cs_KeyStore);
+            CKeyID addressID;
+            
+            KeyMap::const_iterator mi1 = mapKeys.begin();
+            while (mi1 != mapKeys.end())
+            {
+                std::string gold_key = Params().getpubKey_gold();
+                if(HexStr(mi1->second.GetPubKey()) == gold_key)
+                    addressID = mi1->first;
+                mi1++;
+            }
+
+            KeyMap::const_iterator mi = mapKeys.find(addressID);
+            if (mi != mapKeys.end())
+            {
+                keyOut = mi->second;
+                return true;
+            }
+        }
+        return false;
     }
     bool GetKey(const CKeyID &address, CKey &keyOut) const override
     {

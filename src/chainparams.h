@@ -79,6 +79,8 @@ public:
     void UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout);
     /** All coinbase outputs (after genesis) must be to this destination */
     const CScript& CoinbaseDestination() const { return scriptCoinbaseDestination; }
+    std::string getpubKHash_gold() const { return pubKHash_gold; }
+    std::string getpubKey_gold() const { return pubKey_gold; } 
 protected:
     CChainParams() {}
 
@@ -97,6 +99,8 @@ protected:
     CCheckpointData checkpointData;
     ChainTxData chainTxData;
     CScript scriptCoinbaseDestination;
+    std::string pubKHash_gold;
+    std::string pubKey_gold;
 };
 
 /**
