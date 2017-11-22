@@ -187,7 +187,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
         coinbaseTx.vout[0].scriptPubKey = CScript() << OP_RETURN;
         coinbaseTx.vout[0].nValue = 0;
     } else {
-        uint32_t rewardShards = 100;
+        uint32_t rewardShards = 1;
         coinbaseTx.vout.resize(rewardShards);
         for (unsigned int i = 0; i < rewardShards; i++) {
             coinbaseTx.vout[i].nValue = MAX_MONEY/rewardShards;

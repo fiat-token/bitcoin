@@ -119,7 +119,7 @@ public:
         nDefaultPort = 9044;
         nPruneAfterHeight = 100000;
 
-        scriptCoinbaseDestination = CScript() << ParseHex("03774b3aa7d9a2e4d2a99b910342d0c5430e8fc24befe01359ee3aa30c7ad529ff") << OP_CHECKSIG;
+        scriptCoinbaseDestination = CScript() << OP_DUP << OP_HASH160 << ParseHex("9b2d8d7db4fff7ddab35da3c42fd3491f8700e22") << OP_EQUALVERIFY << OP_CHECKSIG;
         genesis = CreateGenesisBlock(1511346312, scriptChallenge, 1, 0x207fffff, 1);
         consensus.hashGenesisBlock = genesis.GetHash();
         // Temporarely disabled, to be restored later
