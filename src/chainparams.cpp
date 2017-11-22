@@ -75,7 +75,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-        const CScript scriptChallenge = CScript() << OP_1 << ParseHex("02a64ef3743aca9ebdc3493b9639e72efb9379ec893fb16082e2e5f26507a7c064") << ParseHex("0367eb592715900598704846574f95a2c89866cf531a1387499015a3976d115d49") << ParseHex("02d1fe19f7cdaee44674687850d80e5176db94f4574cdb4d2740574d7d5727c004") << OP_3 << OP_CHECKMULTISIG;
+        const CScript scriptChallenge = CScript() << OP_1 << ParseHex("027c6ec6d7a34f94df66b3bc4dd9f1d92234f43e8df186da75b5a8e4c19309b731") << ParseHex("03ac7b5e8094f77e68b78cc905385c57e721280ba051b134068b6178176f700411") << ParseHex("03c28d8737981e0150569e76aba1349c339b5765d91d603745fe4c83f0631bad30") << OP_3 << OP_CHECKMULTISIG;
         consensus.nSubsidyHalvingInterval = 210000;
         consensus.BIP34Height = 1;
         consensus.BIP65Height = 1; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
@@ -119,8 +119,8 @@ public:
         nDefaultPort = 9044;
         nPruneAfterHeight = 100000;
 
-        scriptCoinbaseDestination = CScript() << ParseHex("03fe14bc2714f799f1567da07a8f76e5f61778290bb91bbce8b920b1c82ed4fa80") << OP_CHECKSIG;
-        genesis = CreateGenesisBlock(1504224000, scriptChallenge, 1, 0x207fffff, 1);
+        scriptCoinbaseDestination = CScript() << ParseHex("03774b3aa7d9a2e4d2a99b910342d0c5430e8fc24befe01359ee3aa30c7ad529ff") << OP_CHECKSIG;
+        genesis = CreateGenesisBlock(1511346312, scriptChallenge, 1, 0x207fffff, 1);
         consensus.hashGenesisBlock = genesis.GetHash();
         // Temporarely disabled, to be restored later
         //assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
@@ -154,8 +154,8 @@ public:
             0
         };
 
-        pubKHash_gold = "9afcb00ef4883634caff16d513efc97cbb974250";
-        pubKey_gold = "03e23650fa8c49da8da387ca3da2b7b6d90265f72daaba7c7ca78561eb6d23e066";
+        pubKHash_gold = "3988c30bf255572c5e192c3957c57095c5d2e760";
+        pubKey_gold = "035c1f2a7d3761cd47c0acded27c7e4ee95f1a1c5f545a6f660b10b516965b69f0";
     }
 };
 
