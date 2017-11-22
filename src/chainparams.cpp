@@ -123,8 +123,8 @@ public:
         genesis = CreateGenesisBlock(1511346312, scriptChallenge, 1, 0x207fffff, 1);
         consensus.hashGenesisBlock = genesis.GetHash();
         // Temporarely disabled, to be restored later
-        //assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
-        //assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(consensus.hashGenesisBlock == uint256S("0xe5ac035bd3f1ca70b1c72931160c4c2dd23babc74066f8d4ad0e137c373a9048"));
+        assert(genesis.hashMerkleRoot == uint256S("0x3d52a9559a2277f3bb9717ea166009f120a2caced9f6dec6c66688dd40a151b5"));
         
         vSeeds.clear();
 
